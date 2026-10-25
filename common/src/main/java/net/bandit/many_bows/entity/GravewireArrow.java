@@ -75,7 +75,7 @@ public class GravewireArrow extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if (!level().isClientSide() && ignoreTargetHurtFrames && result.getEntity() instanceof LivingEntity livingTarget) {
-            livingTarget.invulnerableTime = 0;
+            livingTarget.setInvulnerableTime(0);
             livingTarget.hurtTime = 0;
         }
 

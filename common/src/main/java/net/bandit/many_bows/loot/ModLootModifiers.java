@@ -13,7 +13,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ConstantValue;
 
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +25,7 @@ public final class ModLootModifiers {
     }
 
     public static void registerLootModifiers() {
-        LootEvent.MODIFY_LOOT_TABLE.register((key, context, builtin) -> {
+        LootEvent.MODIFY_LOOT_TABLE.register((registries, key, context, builtin) -> {
             if (!builtin) return;
 
             BowLootConfig config = ManyBowsConfigHolder.get();
@@ -69,7 +69,7 @@ public final class ModLootModifiers {
         if (chance <= 0.0F) return null;
 
         LootPool.Builder pool = LootPool.lootPool()
-                .setRolls(ConstantValue.exactly(1.0F))
+                .setRolls(Holder.direct(new ConstantValue(1)))
                 .when(LootItemRandomChanceCondition.randomChance(chance));
 
         boolean added = false;

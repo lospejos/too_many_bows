@@ -130,7 +130,7 @@ public class BowLootConfig {
         try (FileReader reader = new FileReader(CONFIG_FILE)) {
             config = GSON.fromJson(reader, BowLootConfig.class);
             if (config == null) config = new BowLootConfig();
-        } catch (IOException e) {
+        } catch (IOException | com.google.gson.JsonParseException e) {
             e.printStackTrace();
             config = new BowLootConfig();
         }

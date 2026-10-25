@@ -1,5 +1,6 @@
 package net.bandit.many_bows.client.renderer;
 
+import org.joml.Matrix4f;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.bandit.many_bows.ManyBowsMod;
@@ -42,8 +43,8 @@ public final class LanternRenderHelper {
         humanoidModel.rightLeg.translateAndRotate(poseStack);
 
         poseStack.translate(-0.20D, 0.20D, 0.10D);
-        poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
-        poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+        poseStack.mulPose(new Matrix4f().rotation(Axis.XP.rotationDegrees(180.0F)));
+        poseStack.mulPose(new Matrix4f().rotation(Axis.YP.rotationDegrees(90.0F)));
         poseStack.scale(0.55F, 0.55F, 0.55F);
         ItemStack renderStack = stack.copy();
         renderStack.set(

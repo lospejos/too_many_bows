@@ -1,5 +1,0 @@
-{
-  "order": 145,
-  "icon": "curios:slot/glove",
-  "validators": ["curios:tag"]
-}

@@ -156,7 +156,7 @@ public class RelicArrow extends AbstractArrow {
             if (isOnFire()) target.igniteForSeconds(5);
             boolean accepted = deal(target, damage * bypass);
             if (accepted && target.isAlive() && bypass < 1) {
-                target.invulnerableTime = 0;
+                target.setInvulnerableTime(0);
                 boolean alive = target.isAlive();
                 target.hurtServer(server, level().damageSources().arrow(this, getOwner()), damage * (1 - bypass));
                 if (alive && !target.isAlive()) killed(target);

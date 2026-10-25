@@ -1,5 +1,8 @@
 package net.bandit.many_bows.relic;
 
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.core.Holder;
+import net.minecraft.util.Prediction;
 import dev.architectury.event.events.common.LootEvent;
 import net.bandit.many_bows.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
@@ -19,15 +22,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ConstantValue;
 import net.minecraft.world.phys.Vec3;
 import java.util.*;
 
 public final class RelicQuests {
     public static final TagKey<EntityType<?>> BOSSES = TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath("too_many_bows", "relic_bosses"));
+    private static final Holder<ContextIntProvider> ONE_ROLL = Holder.direct(new ConstantValue(1));
     public static void init() {
         RelicConfig.get();
-        LootEvent.MODIFY_LOOT_TABLE.register((key, context, builtin) -> {
+        LootEvent.MODIFY_LOOT_TABLE.register((registries, key, context, builtin) -> {
             if (!builtin) return;
             String table = key.identifier().toString();
             Item item = switch(table) {
@@ -36,8 +40,8 @@ public final class RelicQuests {
                 case "minecraft:chests/stronghold_library" -> ItemRegistry.CELESTIAL_GRIP.get();
                 default -> null;
             };
-            if (item != null) context.addPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(LootItemRandomChanceCondition.randomChance(Math.max(0, Math.min(1, RelicConfig.get().fragmentChance)))).add(LootItem.lootTableItem(item)));
-            if (table.equals("minecraft:chests/ancient_city") || table.equals("minecraft:chests/trial_chambers/reward")) context.addPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(LootItemRandomChanceCondition.randomChance(Math.max(0, Math.min(1, RelicConfig.get().bluntedEdgeChance)))).add(LootItem.lootTableItem(ItemRegistry.BLUNTED_EDGE.get())));
+            if (item != null) context.addPool(LootPool.lootPool().setRolls(ONE_ROLL).when(LootItemRandomChanceCondition.randomChance(Math.max(0, Math.min(1, RelicConfig.get().fragmentChance)))).add(LootItem.lootTableItem(item)));
+            if (table.equals("minecraft:chests/ancient_city") || table.equals("minecraft:chests/trial_chambers/reward")) context.addPool(LootPool.lootPool().setRolls(ONE_ROLL).when(LootItemRandomChanceCondition.randomChance(Math.max(0, Math.min(1, RelicConfig.get().bluntedEdgeChance)))).add(LootItem.lootTableItem(ItemRegistry.BLUNTED_EDGE.get())));
         });
     }
 
@@ -54,7 +58,7 @@ public final class RelicQuests {
         else player.sendSystemMessage(text);
     }
 
-    public static void give(Player player, ItemStack stack) { if (!player.getInventory().add(stack)) player.drop(stack, false); }
+    public static void give(Player player, ItemStack stack) { if (!player.getInventory().add(stack)) player.drop(stack, false, Prediction.SERVER_ONLY); }
     public static void trialMiss(ItemStack bow, int shot) {
         if (bow.isEmpty()) return;
         if (RelicData.read(bow).getInt("Trials") == 1) RelicData.edit(bow, t -> {

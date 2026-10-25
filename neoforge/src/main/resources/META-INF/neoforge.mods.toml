@@ -17,21 +17,21 @@ config="too_many_bows.mixins.json"
 [[dependencies.too_many_bows]]
 modId="neoforge"
 type="required"
-versionRange="[26.2.0.57,)"
+versionRange="[26.3.0.99,)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.too_many_bows]]
 modId="minecraft"
 type="required"
-versionRange="[26.2,26.2.1)"
+versionRange="[26.3,26.3.1)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.too_many_bows]]
 modId="architectury"
 type="required"
-versionRange="[21.0.7,)"
+versionRange="[22.0.5,)"
 ordering="AFTER"
 side="BOTH"
 
@@ -39,7 +39,7 @@ side="BOTH"
 [[dependencies.too_many_bows]]
 modId="curios"
 type="required"
-versionRange="[16.0.0,)"
+versionRange="[17.0.0-beta.3,)"
 ordering="AFTER"
 side="BOTH"
 
